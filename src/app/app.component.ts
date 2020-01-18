@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { JeopardyService } from './jeopardy.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +8,14 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.sass']
 })
 export class AppComponent {
-  title = 'jeopardy-app';
+  title: String = 'jeopardy-app';
+  money: Number;
+  
+  constructor(
+    private jeopardyService: JeopardyService
+  ){
+  }
+  ngOnInit(){
+    this.money = this.jeopardyService.getMoney();
+  }
 }

@@ -1,17 +1,28 @@
+<br />
 <div>
-  CATEGORY:
+  CATEGORY: {{clue?.category?.title}}
+</div>
+<br />
+<div>
+  QUESTION: {{clue?.question}}
 </div>
 
-<div>
-  QUESTION:
-</div>
-
-<button>View Solution</button>
-<button>Next Question</button>
-
-<form>
-  <input type="text" placeholder="Answer">
-  <button type="submit">Submit</button>
+<br />
+<button (click)="viewSolution()">View Solution</button>
+<button *ngIf="enableNextButton" (click)="fetchNextClue()">Next Question</button>
+<br />
+<form #clueForm="ngForm" >
+  <input [disabled]="disableForm" type="text" placeholder="Answer" [(ngModel)]="userAnswer" id="userAnswer" name="userAnswer">
+  <button [disabled]="disableForm" type="button" (click)="checkSolution()">Submit</button>
 </form>
-
-ANSWER:
+<br />
+ANSWER: <p *ngIf="showAnswer || disableForm">{{clue?.answer}}</p>
+<br />
+<div *ngIf="disableForm">
+  <p *ngIf="showAnswer"> 
+    Too hard? Try the next one!
+  </p>
+  <p *ngIf="!showAnswer"> 
+    YOUR ANSWER IS {{ (result) ? "CORRECT!!!" : "WRONG :( Try the next one!"}}
+  </p>
+</div>

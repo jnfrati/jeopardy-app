@@ -1,8 +1,15 @@
-
-<div>
-  <app-clue></app-clue>
+<div *ngIf="loading">
+  Loading...
 </div>
-
+<div *ngIf="!loading">
+  <div *ngIf="(randomClue$ | async) as clues">
+    <app-clue
+      [clue]="clues[clues.length-1]"
+      (fetchNext)="getNextRandomClue()"
+      (correctAnswer)="earnMoney($event)"
+    ></app-clue>
+  </div>
+</div>
 
 
 
