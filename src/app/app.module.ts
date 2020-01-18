@@ -7,13 +7,15 @@ import { AppComponent } from './app.component';
 import { RandomClueComponent } from './random-clue/random-clue.component';
 import { CategoriesListComponent } from './categories-list/categories-list.component';
 import { CategoryComponent } from './category/category.component';
+import { ClueComponent } from './clue/clue.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     RandomClueComponent,
     CategoriesListComponent,
-    CategoryComponent
+    CategoryComponent,
+    ClueComponent
   ],
   imports: [
     BrowserModule,
