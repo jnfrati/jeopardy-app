@@ -8,7 +8,6 @@ import { map, catchError, retry, reduce, scan, tap } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class JeopardyService {
-  randomClue$: BehaviorSubject<Clue | null> = new BehaviorSubject<Clue>(null);
   // money: Number[] = [0];
   money: Number = 0;
 
@@ -16,16 +15,13 @@ export class JeopardyService {
     private http: HttpClient
   ) { }
 
-  fetchNextRandomClue(): void {
-    this.http.get<Clue[]>('http://jservice.io/api/random')
+  fetchNextRandomClue(): Observable<Clue> {
+    return this.http.get<Clue[]>('http://jservice.io/api/random')
       .pipe(
         map((response)=> {
           return response[0]
         })
       )
-      .subscribe(clue => {
-        this.randomClue$.next(clue)
-      })
   }
 
   earnMoney(amount: Number){

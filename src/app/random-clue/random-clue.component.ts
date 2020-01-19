@@ -10,18 +10,17 @@ import { tap } from 'rxjs/operators';
   styleUrls: ['./random-clue.component.sass']
 })
 export class RandomClueComponent implements OnInit {
-  randomClue$: BehaviorSubject<Clue>
+  randomClue$: Observable<Clue>
   constructor(
     private jeopardyService: JeopardyService
   ) { }
 
   ngOnInit() {
     this.getNextRandomClue();
-    this.randomClue$ = this.jeopardyService.randomClue$;
   }
   
   getNextRandomClue(){
-    this.jeopardyService.fetchNextRandomClue()
+    this.randomClue$ = this.jeopardyService.fetchNextRandomClue()
   }
 
   earnMoney(amount: Number){
