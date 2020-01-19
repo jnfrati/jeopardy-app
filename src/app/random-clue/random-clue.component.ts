@@ -18,8 +18,8 @@ export class RandomClueComponent implements OnInit {
   ngOnInit() {
     this.getNextRandomClue();
     this.randomClue$ = this.jeopardyService.randomClues$;
-    
   }
+  
   getNextRandomClue(){
     this.jeopardyService.fetchNextRandomClue()
   }

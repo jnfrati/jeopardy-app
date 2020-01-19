@@ -8,25 +8,13 @@ import { map, catchError, retry, reduce, scan, tap } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class JeopardyService {
-  
-  
   randomClues$: BehaviorSubject<Clue[]> = new BehaviorSubject<Clue[]>([]);
   // money: Number[] = [0];
   money: Number = 0;
 
-
   constructor(
     private http: HttpClient
   ) { }
-
-  // getRandomClues(): Observable<Clue[]>{
-  //   return new Observable(subscribe=>{
-  //     subscribe.next(this.randomClues)
-  //     return function unsuscribe(){
-  //       this.randomClues = []
-  //     }
-  //   })
-  // }
 
   fetchNextRandomClue(): void {
     this.http.get<Clue[]>('http://jservice.io/api/random')
@@ -36,7 +24,6 @@ export class JeopardyService {
         })
       )
       .subscribe(clue => {
-        console.log('Clue: ', clue);
         const nextClues: Clue[] = this.randomClues$.getValue();
         nextClues.push(clue);
         this.randomClues$.next(nextClues)
