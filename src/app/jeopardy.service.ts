@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Clue } from './clue';
-import { Observable } from 'rxjs';
-import { map, catchError, retry, reduce, scan } from 'rxjs/operators';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { map, catchError, retry, reduce, scan, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +10,7 @@ import { map, catchError, retry, reduce, scan } from 'rxjs/operators';
 export class JeopardyService {
   
   
-  randomClues: Clue[] = [];
+  randomClues$: BehaviorSubject<Clue[]> = new BehaviorSubject<Clue[]>([]);
   // money: Number[] = [0];
   money: Number = 0;
 
@@ -19,34 +19,28 @@ export class JeopardyService {
     private http: HttpClient
   ) { }
 
-  getRandomClues(): Observable<Clue[]>{
-    return new Observable(subscribe=>{
-      subscribe.next(this.randomClues)
-      return function unsuscribe(){
-        this.randomClues = []
-      }
-    })
-  }
+  // getRandomClues(): Observable<Clue[]>{
+  //   return new Observable(subscribe=>{
+  //     subscribe.next(this.randomClues)
+  //     return function unsuscribe(){
+  //       this.randomClues = []
+  //     }
+  //   })
+  // }
 
-  fetchNextRandomClue(): Promise<Clue>{
-    return new Promise(resolve => {
-      this.http.get<Clue[]>('http://jservice.io/api/random')
+  fetchNextRandomClue(): void {
+    this.http.get<Clue[]>('http://jservice.io/api/random')
       .pipe(
-        map((response: Clue[])=>({
-          ...response[0]
-        } as Clue)),
-        retry(3),
-        catchError((error:any) => {
-          console.log("Error on fetch random clue");
-          return error;
+        map((response)=> {
+          return response[0]
         })
-      ).subscribe(
-        (randomClue: Clue) =>{
-          this.randomClues.push(randomClue);
-          resolve(randomClue);
-        }
       )
-    })
+      .subscribe(clue => {
+        console.log('Clue: ', clue);
+        const nextClues: Clue[] = this.randomClues$.getValue();
+        nextClues.push(clue);
+        this.randomClues$.next(nextClues)
+      })
   }
 
   earnMoney(amount: Number){
