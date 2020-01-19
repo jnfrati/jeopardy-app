@@ -8,7 +8,7 @@ import { map, catchError, retry, reduce, scan, tap } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class JeopardyService {
-  randomClues$: BehaviorSubject<Clue[]> = new BehaviorSubject<Clue[]>([]);
+  randomClue$: BehaviorSubject<Clue | null> = new BehaviorSubject<Clue>(null);
   // money: Number[] = [0];
   money: Number = 0;
 
@@ -24,9 +24,7 @@ export class JeopardyService {
         })
       )
       .subscribe(clue => {
-        const nextClues: Clue[] = this.randomClues$.getValue();
-        nextClues.push(clue);
-        this.randomClues$.next(nextClues)
+        this.randomClue$.next(clue)
       })
   }
 

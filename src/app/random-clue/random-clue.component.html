@@ -1,11 +1,9 @@
-<ng-container *ngIf="(randomClue$ | async) as clues; else loading">
-  <app-clue
-    *ngFor="let clue of clues"
-    [clue]="clue"
-    (fetchNext)="getNextRandomClue()"
-    (correctAnswer)="earnMoney($event)">
-  </app-clue>
-</ng-container>
+<app-clue
+  *ngIf="(randomClue$ | async) as clue; else loading"
+  [clue]="clue"
+  (fetchNext)="getNextRandomClue()"
+  (correctAnswer)="earnMoney($event)">
+</app-clue>
 
 <ng-template #loading>
   <div>Loading...</div>

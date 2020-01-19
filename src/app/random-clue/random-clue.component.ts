@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { JeopardyService } from '../jeopardy.service';
 import { Clue } from '../clue';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 @Component({
@@ -10,14 +10,14 @@ import { tap } from 'rxjs/operators';
   styleUrls: ['./random-clue.component.sass']
 })
 export class RandomClueComponent implements OnInit {
-  randomClue$: Observable<Clue[]>
+  randomClue$: BehaviorSubject<Clue>
   constructor(
     private jeopardyService: JeopardyService
   ) { }
 
   ngOnInit() {
     this.getNextRandomClue();
-    this.randomClue$ = this.jeopardyService.randomClues$;
+    this.randomClue$ = this.jeopardyService.randomClue$;
   }
   
   getNextRandomClue(){
